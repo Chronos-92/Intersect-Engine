@@ -1571,10 +1571,10 @@ namespace Intersect.Server.Entities
             //Check for parties and safe zones, friendly fire off (unless its healing)
             if (target is Player targetPlayer && this is Player player)
             {
-                if (player.InParty(targetPlayer))
-                {
-                    return;
-                }
+                //if (player.InParty(targetPlayer))
+                //{
+                //    return;
+                //}
 
                 //Check if either the attacker or the defender is in a "safe zone" (Only apply if combat is PVP)
                 //Player interaction common events
@@ -1586,56 +1586,56 @@ namespace Intersect.Server.Entities
                     }
                 }
 
-                if (MapInstance.Get(MapId)?.ZoneType == MapZones.Safe)
-                {
-                    return;
-                }
+                //if (MapInstance.Get(MapId)?.ZoneType == MapZones.Safe)
+                //{
+                //    return;
+                //}
 
-                if (MapInstance.Get(target.MapId)?.ZoneType == MapZones.Safe)
-                {
-                    return;
-                }
+                //if (MapInstance.Get(target.MapId)?.ZoneType == MapZones.Safe)
+                //{
+                //    return;
+                //}
             }
 
             //Check for taunt status and trying to attack a target that has not taunted you.
-            var statusList = Statuses.Values.ToArray();
-            foreach (var status in statusList)
-            {
-                if (status.Type == StatusTypes.Taunt)
-                {
-                    if (Target != target)
-                    {
-                        PacketSender.SendActionMsg(this, Strings.Combat.miss, CustomColors.Combat.Missed);
+            //var statusList = Statuses.Values.ToArray();
+            //foreach (var status in statusList)
+            //{
+            //    if (status.Type == StatusTypes.Taunt)
+            //    {
+            //        if (Target != target)
+            //        {
+            //            PacketSender.SendActionMsg(this, Strings.Combat.miss, CustomColors.Combat.Missed);
 
-                        return;
-                    }
-                }
-            }
+            //            return;
+            //        }
+            //    }
+            //}
 
-            AttackTimer = Globals.Timing.TimeMs + CalculateAttackTime();
+            //AttackTimer = Globals.Timing.TimeMs + CalculateAttackTime();
 
             //Check if the attacker is blinded.
-            if (IsOneBlockAway(target))
-            {
-                var statuses = Statuses.Values.ToArray();
-                foreach (var status in statuses)
-                {
-                    if (status.Type == StatusTypes.Stun ||
-                        status.Type == StatusTypes.Blind ||
-                        status.Type == StatusTypes.Sleep)
-                    {
-                        PacketSender.SendActionMsg(this, Strings.Combat.miss, CustomColors.Combat.Missed);
-                        PacketSender.SendEntityAttack(this, CalculateAttackTime());
+            //if (IsOneBlockAway(target))
+            //{
+            //    var statuses = Statuses.Values.ToArray();
+            //    foreach (var status in statuses)
+            //    {
+            //        if (status.Type == StatusTypes.Stun ||
+            //            status.Type == StatusTypes.Blind ||
+            //            status.Type == StatusTypes.Sleep)
+            //        {
+            //            PacketSender.SendActionMsg(this, Strings.Combat.miss, CustomColors.Combat.Missed);
+            //            PacketSender.SendEntityAttack(this, CalculateAttackTime());
 
-                        return;
-                    }
-                }
-            }
+            //            return;
+            //        }
+            //    }
+            //}
 
-            Attack(
-                target, baseDamage, 0, damageType, scalingStat, scaling, critChance, critMultiplier, deadAnimations,
-                aliveAnimations, true
-            );
+            //Attack(
+            //    target, baseDamage, 0, damageType, scalingStat, scaling, critChance, critMultiplier, deadAnimations,
+            //    aliveAnimations, true
+            //);
 
             //If we took damage lets reset our combat timer
             target.CombatTimer = Globals.Timing.TimeMs + Options.CombatTime;
