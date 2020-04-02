@@ -38,6 +38,8 @@ namespace Intersect.GameObjects
 
         [NotMapped] public List<ClassSprite> Sprites = new List<ClassSprite>();
 
+        [NotMapped] public List<ClassHair> Hairs = new List<ClassHair>();
+
         [NotMapped] public int[] StatIncrease = new int[(int) Stats.StatCount];
 
         [NotMapped] public int[] VitalIncrease = new int[(int) Vitals.VitalCount];
@@ -194,6 +196,14 @@ namespace Intersect.GameObjects
             protected set => Sprites = JsonConvert.DeserializeObject<List<ClassSprite>>(value);
         }
 
+        //Sprites
+        [JsonIgnore]
+        [Column("Hairs")]
+        public string JsonHairs {
+            get => JsonConvert.SerializeObject(Hairs);
+            protected set => Hairs = JsonConvert.DeserializeObject<List<ClassHair>>(value ?? "[]");     // Since this value wouldn't exist on a migrated database, load in a blank array in case the database returns null.
+        }
+
         //Stat Increases (per level)
         [JsonIgnore]
         [Column("StatIncreases")]
@@ -291,6 +301,13 @@ namespace Intersect.GameObjects
 
         public string Sprite = "";
 
+    }
+
+    public class ClassHair 
+    {
+        public string Hair = "";
+
+        public Gender Gender;
     }
 
 }

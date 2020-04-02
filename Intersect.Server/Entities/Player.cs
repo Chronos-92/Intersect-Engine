@@ -71,6 +71,8 @@ namespace Intersect.Server.Entities
 
         public Gender Gender { get; set; }
 
+        public string Hair { get; set; }
+
         public long Exp { get; set; }
 
         public int StatPoints { get; set; }
