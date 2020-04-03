@@ -245,16 +245,27 @@ namespace Intersect.Client.Interface.Menu
                             if (mPaperdollPortraits[i] != mCharacterPortrait)
                             {
                                 var texture = String.Empty;
-                                if (true)
+                                GameContentManager.TextureType type;
+                                if (Options.EquipmentSlots.IndexOf(Options.PaperdollOrder[1][i]) == Options.EquipmentSlots.IndexOf(Options.Equipment.HairSlot))
                                 {
-                                    texture = Characters[mSelectedChar].Equipment[i] != string.Empty ? Characters[mSelectedChar].Equipment[i] : Characters[mSelectedChar].CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair];
+                                    if (Characters[mSelectedChar].Equipment[i] != String.Empty && Characters[mSelectedChar].Equipment[i] != null) 
+                                    {
+                                        texture = Characters[mSelectedChar].Equipment[i];
+                                        type = GameContentManager.TextureType.Paperdoll;
+                                    } 
+                                    else
+                                    {
+                                        texture = Characters[mSelectedChar].CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair];
+                                        type = GameContentManager.TextureType.Hair;
+                                    }
                                 }
                                 else
                                 {
                                     texture = Characters[mSelectedChar].Equipment[i];
+                                    type = GameContentManager.TextureType.Paperdoll;
                                 }
                                 mPaperdollPortraits[i].Texture = Globals.ContentManager.GetTexture(
-                                    GameContentManager.TextureType.Paperdoll, Characters[mSelectedChar].Equipment[i]
+                                    type, texture
                                 );
 
                                 if (mPaperdollPortraits[i].Texture != null)
