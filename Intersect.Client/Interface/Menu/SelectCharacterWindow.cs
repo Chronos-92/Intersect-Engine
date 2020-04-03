@@ -244,6 +244,15 @@ namespace Intersect.Client.Interface.Menu
                         {
                             if (mPaperdollPortraits[i] != mCharacterPortrait)
                             {
+                                var texture = String.Empty;
+                                if (true)
+                                {
+                                    texture = Characters[mSelectedChar].Equipment[i] != string.Empty ? Characters[mSelectedChar].Equipment[i] : Characters[mSelectedChar].CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair];
+                                }
+                                else
+                                {
+                                    texture = Characters[mSelectedChar].Equipment[i];
+                                }
                                 mPaperdollPortraits[i].Texture = Globals.ContentManager.GetTexture(
                                     GameContentManager.TextureType.Paperdoll, Characters[mSelectedChar].Equipment[i]
                                 );
@@ -370,6 +379,8 @@ namespace Intersect.Client.Interface.Menu
 
         public string[] Equipment = new string[Options.EquipmentSlots.Count + 1];
 
+        public string[] CustomSpriteLayers = new string[(int)Enums.CustomSpriteLayers.CustomCount];
+
         public bool Exists = false;
 
         public string Face = "";
@@ -394,9 +405,11 @@ namespace Intersect.Client.Interface.Menu
             string face,
             int level,
             string charClass,
-            string[] equipment
+            string[] equipment,
+            string[] customspritelayers
         )
         {
+            CustomSpriteLayers = customspritelayers;
             Equipment = equipment;
             Id = id;
             Name = name;

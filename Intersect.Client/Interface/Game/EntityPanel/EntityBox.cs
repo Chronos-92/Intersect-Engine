@@ -811,6 +811,38 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                         PaperdollPanels[n].Show();
                         PaperdollTextures[n] = paperdoll;
                     }
+                    else if (n == Options.EquipmentSlots.IndexOf(Options.Equipment.HairSlot) && MyEntity is Player)
+                    {
+                        // Set this slot to show the hair sprite, because we don't have anything else in the defined hair slot!
+                        var hairTex = Globals.ContentManager.GetTexture(
+                            GameContentManager.TextureType.Hair, ((Player)MyEntity).CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair]
+                        );
+
+                        PaperdollPanels[n].Texture = hairTex;
+                        if (hairTex != null)
+                        {
+                            PaperdollPanels[n]
+                                .SetTextureRect(
+                                    0, 0, PaperdollPanels[n].Texture.GetWidth() / 4,
+                                    PaperdollPanels[n].Texture.GetHeight() / 4
+                                );
+
+                            PaperdollPanels[n]
+                                .SetSize(
+                                    PaperdollPanels[n].Texture.GetWidth() / 4,
+                                    PaperdollPanels[n].Texture.GetHeight() / 4
+                                );
+
+                            PaperdollPanels[n]
+                                .SetPosition(
+                                    EntityFaceContainer.Width / 2 - PaperdollPanels[n].Width / 2,
+                                    EntityFaceContainer.Height / 2 - PaperdollPanels[n].Height / 2
+                                );
+                        }
+
+                        PaperdollPanels[n].Show();
+                        PaperdollTextures[n] = paperdoll;
+                    }
 
                     //Check for Player layer
                     if (Options.PaperdollOrder[1][z] != "Player")

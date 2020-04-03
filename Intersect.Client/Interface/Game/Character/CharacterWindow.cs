@@ -264,6 +264,38 @@ namespace Intersect.Client.Interface.Game.Character
 
                         PaperdollPanels[z].Show();
                         PaperdollTextures[z] = paperdoll;
+                    } 
+                    else if (z == Options.EquipmentSlots.IndexOf(Options.Equipment.HairSlot))
+                    {
+                        // Set this slot to show the hair sprite, because we don't have anything else in the defined hair slot!
+                        var hairTex = Globals.ContentManager.GetTexture(
+                            GameContentManager.TextureType.Hair, Globals.Me.CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair]
+                        );
+
+                        PaperdollPanels[z].Texture = hairTex;
+                        if (hairTex != null)
+                        {
+                            PaperdollPanels[z]
+                                .SetTextureRect(
+                                    0, 0, PaperdollPanels[z].Texture.GetWidth() / 4,
+                                    PaperdollPanels[z].Texture.GetHeight() / 4
+                                );
+
+                            PaperdollPanels[z]
+                                .SetSize(
+                                    PaperdollPanels[z].Texture.GetWidth() / 4,
+                                    PaperdollPanels[z].Texture.GetHeight() / 4
+                                );
+
+                            PaperdollPanels[z]
+                                .SetPosition(
+                                    mCharacterContainer.Width / 2 - PaperdollPanels[z].Width / 2,
+                                    mCharacterContainer.Height / 2 - PaperdollPanels[z].Height / 2
+                                );
+                        }
+
+                        PaperdollPanels[z].Show();
+                        PaperdollTextures[z] = paperdoll;
                     }
                 }
             }
