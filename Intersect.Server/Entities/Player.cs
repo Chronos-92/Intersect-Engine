@@ -71,7 +71,14 @@ namespace Intersect.Server.Entities
 
         public Gender Gender { get; set; }
 
-        public string Hair { get; set; }
+        [NotMapped]
+        public string[] CustomSpriteLayers { get; set; } = new string[(int)Enums.CustomSpriteLayers.CustomCount];
+
+        [Column("CustomSpriteLayers"), JsonIgnore]
+        public string CustomSpriteLayersJson {
+            get => DatabaseUtils.SaveStringArray(CustomSpriteLayers, (int)Enums.CustomSpriteLayers.CustomCount);
+            set => CustomSpriteLayers = DatabaseUtils.LoadStringArray(value, (int)Enums.CustomSpriteLayers.CustomCount);
+        }
 
         public long Exp { get; set; }
 

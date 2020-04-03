@@ -26,6 +26,8 @@ namespace Intersect.Client.Interface.Menu
 
         private ImagePanel mCharacterPortrait;
 
+        private ImagePanel mCharacterHair;
+
         //Image
         private string mCharacterPortraitImg = "";
 
@@ -48,6 +50,8 @@ namespace Intersect.Client.Interface.Menu
 
         private int mDisplaySpriteIndex = -1;
 
+        private int mDisplayHairIndex = -1;
+
         private LabeledCheckBox mFemaleChk;
 
         private List<KeyValuePair<int, ClassSprite>> mFemaleSprites = new List<KeyValuePair<int, ClassSprite>>();
@@ -68,9 +72,18 @@ namespace Intersect.Client.Interface.Menu
         //Class Info
         private List<KeyValuePair<int, ClassSprite>> mMaleSprites = new List<KeyValuePair<int, ClassSprite>>();
 
+        private List<KeyValuePair<int, ClassHair>> mMaleHair = new List<KeyValuePair<int, ClassHair>>();
+
+        private List<KeyValuePair<int, ClassHair>> mFemaleHair = new List<KeyValuePair<int, ClassHair>>();
+
         private Button mNextSpriteButton;
 
         private Button mPrevSpriteButton;
+
+        private Button mNextHairButton;
+
+        private Button mPrevHairButton;
+
 
         private SelectCharacterWindow mSelectCharacterWindow;
 
@@ -133,6 +146,10 @@ namespace Intersect.Client.Interface.Menu
             mCharacterPortrait = new ImagePanel(mCharacterContainer, "CharacterPortait");
             mCharacterPortrait.SetSize(48, 48);
 
+            // Hair Sprite
+            mCharacterHair = new ImagePanel(mCharacterContainer, "CharacterHair");
+            mCharacterHair.SetSize(48, 48);
+
             //Next Sprite Button
             mNextSpriteButton = new Button(mCharacterContainer, "NextSpriteButton");
             mNextSpriteButton.Clicked += _nextSpriteButton_Clicked;
@@ -140,6 +157,14 @@ namespace Intersect.Client.Interface.Menu
             //Prev Sprite Button
             mPrevSpriteButton = new Button(mCharacterContainer, "PreviousSpriteButton");
             mPrevSpriteButton.Clicked += _prevSpriteButton_Clicked;
+
+            //Next Hair Button
+            mNextHairButton = new Button(mCharacterContainer, "NextHairButton");
+            mNextHairButton.Clicked += _nextHairButton_Clicked;
+
+            //Prev Hair Button
+            mPrevHairButton = new Button(mCharacterContainer, "PreviousHairButton");
+            mPrevHairButton.Clicked += _prevHairButton_Clicked;
 
             //Class Background
             mGenderBackground = new ImagePanel(mCharCreationPanel, "GenderPanel");
@@ -218,6 +243,7 @@ namespace Intersect.Client.Interface.Menu
             if (GetClass() != null && mDisplaySpriteIndex != -1)
             {
                 mCharacterPortrait.IsHidden = false;
+                mCharacterHair.IsHidden = false;
                 if (GetClass().Sprites.Count > 0)
                 {
                     if (mMaleChk.IsChecked)
@@ -230,6 +256,10 @@ namespace Intersect.Client.Interface.Menu
                         {
                             mCharacterPortrait.Texture = Globals.ContentManager.GetTexture(
                                 GameContentManager.TextureType.Entity, mMaleSprites[mDisplaySpriteIndex].Value.Sprite
+                            );
+
+                            mCharacterHair.Texture = Globals.ContentManager.GetTexture(
+                                GameContentManager.TextureType.Hair, mMaleHair[mDisplayHairIndex].Value.Hair
                             );
 
                             isFace = false;
@@ -245,6 +275,10 @@ namespace Intersect.Client.Interface.Menu
                         {
                             mCharacterPortrait.Texture = Globals.ContentManager.GetTexture(
                                 GameContentManager.TextureType.Entity, mFemaleSprites[mDisplaySpriteIndex].Value.Sprite
+                            );
+
+                            mCharacterHair.Texture = Globals.ContentManager.GetTexture(
+                                GameContentManager.TextureType.Hair, mFemaleHair[mDisplayHairIndex].Value.Hair
                             );
 
                             isFace = false;
@@ -281,13 +315,27 @@ namespace Intersect.Client.Interface.Menu
                                 mCharacterPortrait.Texture.GetHeight() / 4
                             );
 
+                            mCharacterHair.SetTextureRect(
+                                0, 0, mCharacterHair.Texture.GetWidth() / 4,
+                                mCharacterHair.Texture.GetHeight() / 4
+                            );
+
                             mCharacterPortrait.SetSize(
                                 mCharacterPortrait.Texture.GetWidth() / 4, mCharacterPortrait.Texture.GetHeight() / 4
+                            );
+
+                            mCharacterHair.SetSize(
+                                mCharacterHair.Texture.GetWidth() / 4, mCharacterHair.Texture.GetHeight() / 4
                             );
 
                             mCharacterPortrait.SetPosition(
                                 mCharacterContainer.Width / 2 - mCharacterPortrait.Width / 2,
                                 mCharacterContainer.Height / 2 - mCharacterPortrait.Height / 2
+                            );
+
+                            mCharacterHair.SetPosition(
+                                mCharacterContainer.Width / 2 - mCharacterHair.Width / 2,
+                                mCharacterContainer.Height / 2 - mCharacterHair.Height / 2
                             );
                         }
                     }
@@ -296,6 +344,7 @@ namespace Intersect.Client.Interface.Menu
             else
             {
                 mCharacterPortrait.IsHidden = true;
+                mCharacterHair.IsHidden = true;
             }
         }
 
@@ -333,6 +382,7 @@ namespace Intersect.Client.Interface.Menu
             mMaleSprites.Clear();
             mFemaleSprites.Clear();
             mDisplaySpriteIndex = -1;
+            mDisplayHairIndex = -1;
             if (cls != null)
             {
                 for (var i = 0; i < cls.Sprites.Count; i++)
@@ -346,6 +396,18 @@ namespace Intersect.Client.Interface.Menu
                         mFemaleSprites.Add(new KeyValuePair<int, ClassSprite>(i, cls.Sprites[i]));
                     }
                 }
+                for (var i = 0; i < cls.Hairs.Count; i++) 
+                {
+                    if (cls.Hairs[i].Gender == 0) 
+                    {
+                        mMaleHair.Add(new KeyValuePair<int, ClassHair>(i, cls.Hairs[i]));
+                    } 
+                    else 
+                    {
+                        mFemaleHair.Add(new KeyValuePair<int, ClassHair>(i, cls.Hairs[i]));
+                    }
+                }
+
             }
 
             ResetSprite();
@@ -355,8 +417,11 @@ namespace Intersect.Client.Interface.Menu
         {
             mNextSpriteButton.IsHidden = true;
             mPrevSpriteButton.IsHidden = true;
+            mNextHairButton.IsHidden = true;
+            mPrevHairButton.IsHidden = true;
             if (mMaleChk.IsChecked)
             {
+                // Sprite
                 if (mMaleSprites.Count > 0)
                 {
                     mDisplaySpriteIndex = 0;
@@ -370,9 +435,25 @@ namespace Intersect.Client.Interface.Menu
                 {
                     mDisplaySpriteIndex = -1;
                 }
+
+                // Hair
+                if (mMaleHair.Count > 0) 
+                    {
+                    mDisplayHairIndex = 0;
+                    if (mMaleHair.Count > 1) 
+                    {
+                        mNextHairButton.IsHidden = false;
+                        mPrevHairButton.IsHidden = false;
+                    }
+                } 
+                else 
+                {
+                    mDisplayHairIndex = -1;
+                }
             }
             else
             {
+                // Sprite
                 if (mFemaleSprites.Count > 0)
                 {
                     mDisplaySpriteIndex = 0;
@@ -385,6 +466,20 @@ namespace Intersect.Client.Interface.Menu
                 else
                 {
                     mDisplaySpriteIndex = -1;
+                }
+                // Hair
+                if (mFemaleHair.Count > 0) 
+                {
+                    mDisplayHairIndex = 0;
+                    if (mFemaleHair.Count > 1) 
+                    {
+                        mNextHairButton.IsHidden = false;
+                        mPrevHairButton.IsHidden = false;
+                    }
+                } 
+                else 
+                {
+                    mDisplayHairIndex = -1;
                 }
             }
         }
@@ -453,6 +548,75 @@ namespace Intersect.Client.Interface.Menu
                 else
                 {
                     mDisplaySpriteIndex = -1;
+                }
+            }
+
+            UpdateDisplay();
+        }
+
+        private void _prevHairButton_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            mDisplayHairIndex--;
+            if (mMaleChk.IsChecked)
+            {
+                if (mMaleHair.Count > 0)
+                {
+                    if (mDisplayHairIndex == -1)
+                    {
+                        mDisplayHairIndex = mMaleHair.Count - 1;
+                    }
+                }
+                else
+                {
+                    mDisplayHairIndex = -1;
+                }
+            }
+            else
+            {
+                if (mFemaleHair.Count > 0)
+                {
+                    if (mDisplayHairIndex == -1)
+                    {
+                        mDisplayHairIndex = mFemaleHair.Count - 1;
+                    }
+                }
+                else
+                {
+                    mDisplayHairIndex = -1;
+                }
+            }
+
+            UpdateDisplay();
+        }
+
+        private void _nextHairButton_Clicked(Base sender, ClickedEventArgs arguments) {
+            mDisplayHairIndex++;
+            if (mMaleChk.IsChecked)
+            {
+                if (mMaleHair.Count > 0)
+                {
+                    if (mDisplayHairIndex >= mMaleHair.Count)
+                    {
+                        mDisplayHairIndex = 0;
+                    }
+                }
+                else
+                {
+                    mDisplayHairIndex = -1;
+                }
+            }
+            else
+            {
+                if (mFemaleHair.Count > 0)
+                {
+                    if (mDisplayHairIndex >= mFemaleHair.Count)
+                    {
+                        mDisplayHairIndex = 0;
+                    }
+                }
+                else
+                {
+                    mDisplayHairIndex = -1;
                 }
             }
 
