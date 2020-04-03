@@ -38,7 +38,7 @@ namespace Intersect.GameObjects
 
         [NotMapped] public List<ClassSprite> Sprites = new List<ClassSprite>();
 
-        [NotMapped] public List<ClassHair> Hairs = new List<ClassHair>();
+        [NotMapped] public Dictionary<Enums.CustomSpriteLayers, List<CustomSpriteLayer>> CustomSpriteLayers = new Dictionary<Enums.CustomSpriteLayers, List<CustomSpriteLayer>>();
 
         [NotMapped] public int[] StatIncrease = new int[(int) Stats.StatCount];
 
@@ -55,6 +55,12 @@ namespace Intersect.GameObjects
             ExperienceCurve.Calculate(1);
             BaseExp = DEFAULT_BASE_EXPERIENCE;
             ExpIncrease = DEFAULT_EXPERIENCE_INCREASE;
+
+            // Init the empty lists, stop getting null references.
+            for (int i = 0; i < (int)Enums.CustomSpriteLayers.CustomCount; i++)
+            {
+                CustomSpriteLayers[(Enums.CustomSpriteLayers)i] = new List<CustomSpriteLayer>();
+            }
         }
 
         //Parameterless constructor for EF
@@ -66,6 +72,12 @@ namespace Intersect.GameObjects
             ExperienceCurve.Calculate(1);
             BaseExp = DEFAULT_BASE_EXPERIENCE;
             ExpIncrease = DEFAULT_EXPERIENCE_INCREASE;
+
+            // Init the empty lists, stop gettng null references.
+            for (int i = 0; i < (int)Enums.CustomSpriteLayers.CustomCount; i++)
+            {
+                CustomSpriteLayers[(Enums.CustomSpriteLayers)i] = new List<CustomSpriteLayer>();
+            }
         }
 
         [Column("AttackAnimation")]
@@ -198,10 +210,11 @@ namespace Intersect.GameObjects
 
         //Sprites
         [JsonIgnore]
-        [Column("Hairs")]
-        public string JsonHairs {
-            get => JsonConvert.SerializeObject(Hairs);
-            protected set => Hairs = JsonConvert.DeserializeObject<List<ClassHair>>(value ?? "[]");     // Since this value wouldn't exist on a migrated database, load in a blank array in case the database returns null.
+        [Column("CustomSpriteLayers")]
+        public string JsonCustomSpriteLayers
+        {
+            get => JsonConvert.SerializeObject(CustomSpriteLayers);
+            protected set => CustomSpriteLayers = value != null ? JsonConvert.DeserializeObject<Dictionary<Enums.CustomSpriteLayers, List<CustomSpriteLayer>>>(value) : CustomSpriteLayers;     // Because a migrated database doesn't have this, set to default value if no data exists.
         }
 
         //Stat Increases (per level)
@@ -303,9 +316,9 @@ namespace Intersect.GameObjects
 
     }
 
-    public class ClassHair 
+    public class CustomSpriteLayer 
     {
-        public string Hair = "";
+        public string Texture = "";
 
         public Gender Gender;
     }

@@ -75,8 +75,8 @@ namespace Intersect.Server.Migrations.Game
                     b.Property<string>("JsonBaseVitals")
                         .HasColumnName("BaseVitals");
 
-                    b.Property<string>("JsonHairs")
-                        .HasColumnName("Hairs");
+                    b.Property<string>("JsonCustomSpriteLayers")
+                        .HasColumnName("CustomSpriteLayers");
 
                     b.Property<string>("JsonItems")
                         .HasColumnName("Items");

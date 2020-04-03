@@ -890,6 +890,19 @@ namespace Intersect.Client.Networking
             }
         }
 
+        private static void HandlePacket(CustomSpriteLayersPacket packet)
+        {
+            var entityId = packet.EntityId;
+            if (Globals.Entities.ContainsKey(entityId))
+            {
+                var entity = Globals.Entities[entityId];
+                if (entity != null)
+                {
+                    ((Player)entity).CustomSpriteLayers = packet.CustomSpriteLayers;
+                }
+            }
+        }
+
         //StatPointsPacket
         private static void HandlePacket(StatPointsPacket packet)
         {

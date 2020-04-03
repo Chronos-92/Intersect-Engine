@@ -7,7 +7,7 @@ namespace Intersect.Server.Migrations.Game
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Hairs",
+                name: "CustomSpriteLayers",
                 table: "Classes",
                 nullable: true);
         }
@@ -15,7 +15,7 @@ namespace Intersect.Server.Migrations.Game
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Hairs",
+                name: "CustomSpriteLayers",
                 table: "Classes");
         }
     }

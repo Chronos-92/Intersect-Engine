@@ -671,17 +671,17 @@ namespace Intersect.Editor.Forms.Editors
             // Refresh List
             var n = lstHair.SelectedIndex;
             lstHair.Items.Clear();
-            for (var i = 0; i < mEditorItem.Hairs.Count; i++) {
-                if (mEditorItem.Hairs[i].Gender == 0) {
+            for (var i = 0; i < mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].Count; i++) {
+                if (mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][i].Gender == 0) {
                     lstHair.Items.Add(
                         Strings.ClassEditor.spriteitemmale.ToString(
-                            i + 1, TextUtils.NullToNone(mEditorItem.Hairs[i].Hair)
+                            i + 1, TextUtils.NullToNone(mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][i].Texture)
                         )
                     );
                 } else {
                     lstHair.Items.Add(
                         Strings.ClassEditor.spriteitemfemale.ToString(
-                            i + 1, TextUtils.NullToNone(mEditorItem.Hairs[i].Hair)
+                            i + 1, TextUtils.NullToNone(mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][i].Texture)
                         )
                     );
                 }
@@ -1340,7 +1340,7 @@ namespace Intersect.Editor.Forms.Editors
 
         private void cmbHair_SelectedIndexChanged(object sender, EventArgs e) {
             if (lstHair.SelectedIndex >= 0) {
-                mEditorItem.Hairs[lstHair.SelectedIndex].Hair = TextUtils.SanitizeNone(cmbHair?.Text);
+                mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Texture = TextUtils.SanitizeNone(cmbHair?.Text);
 
                 RefreshHairList();
             }
@@ -1349,23 +1349,23 @@ namespace Intersect.Editor.Forms.Editors
         }
 
         private void BtnAddHair_Click(object sender, EventArgs e) {
-            var n = new ClassHair {
-                Hair = null,
+            var n = new CustomSpriteLayer {
+                Texture = null,
                 Gender = 0
             };
 
-            mEditorItem.Hairs.Add(n);
+            mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].Add(n);
 
             if (n.Gender == 0) {
                 lstHair.Items.Add(
                     Strings.ClassEditor.spriteitemmale.ToString(
-                        mEditorItem.Hairs.Count, TextUtils.NullToNone(n.Hair)
+                        mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].Count, TextUtils.NullToNone(n.Texture)
                     )
                 );
             } else {
                 lstHair.Items.Add(
                     Strings.ClassEditor.spriteitemfemale.ToString(
-                        mEditorItem.Hairs.Count, TextUtils.NullToNone(n.Hair)
+                        mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].Count, TextUtils.NullToNone(n.Texture)
                     )
                 );
             }
@@ -1379,7 +1379,7 @@ namespace Intersect.Editor.Forms.Editors
                 return;
             }
 
-            mEditorItem.Hairs.RemoveAt(lstHair.SelectedIndex);
+            mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].RemoveAt(lstHair.SelectedIndex);
             lstHair.Items.RemoveAt(lstHair.SelectedIndex);
 
             RefreshSpriteList(false);
@@ -1392,10 +1392,10 @@ namespace Intersect.Editor.Forms.Editors
         private void lstHair_Click(object sender, EventArgs e) {
             if (lstHair.Items.Count > 0) {
                 cmbHair.SelectedIndex = cmbHair.FindString(
-                    TextUtils.NullToNone(mEditorItem.Hairs[lstHair.SelectedIndex].Hair)
+                    TextUtils.NullToNone(mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Texture)
                 );
 
-                if (mEditorItem.Hairs[lstHair.SelectedIndex].Gender == 0) {
+                if (mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Gender == 0) {
                     rbMale2.Checked = true;
                 } else {
                     rbFemale2.Checked = true;
@@ -1405,14 +1405,14 @@ namespace Intersect.Editor.Forms.Editors
 
         private void rbMale2_Click(object sender, EventArgs e) {
             if (lstHair.Items.Count > 0) {
-                mEditorItem.Hairs[lstHair.SelectedIndex].Gender = Gender.Male;
+                mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Gender = Gender.Male;
                 RefreshHairList();
             }
         }
 
         private void rbFemale2_Click(object sender, EventArgs e) {
             if (lstHair.Items.Count > 0) {
-                mEditorItem.Hairs[lstHair.SelectedIndex].Gender = Gender.Female;
+                mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Gender = Gender.Female;
                 RefreshHairList();
             }
         }

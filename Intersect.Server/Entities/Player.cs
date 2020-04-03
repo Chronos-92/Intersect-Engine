@@ -75,7 +75,8 @@ namespace Intersect.Server.Entities
         public string[] CustomSpriteLayers { get; set; } = new string[(int)Enums.CustomSpriteLayers.CustomCount];
 
         [Column("CustomSpriteLayers"), JsonIgnore]
-        public string CustomSpriteLayersJson {
+        public string CustomSpriteLayersJson
+        {
             get => DatabaseUtils.SaveStringArray(CustomSpriteLayers, (int)Enums.CustomSpriteLayers.CustomCount);
             set => CustomSpriteLayers = DatabaseUtils.LoadStringArray(value, (int)Enums.CustomSpriteLayers.CustomCount);
         }
