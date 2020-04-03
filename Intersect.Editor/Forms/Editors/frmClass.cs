@@ -466,6 +466,12 @@ namespace Intersect.Editor.Forms.Editors
             expGrid.Columns.Add(tnlCol);
             expGrid.Columns.Add(totalCol);
 
+            grpHair.Text = Strings.ClassEditor.hairstyles;
+            grpGender2.Text = Strings.ClassEditor.gender;
+            rbMale2.Text = Strings.ClassEditor.male;
+            rbFemale2.Text = Strings.ClassEditor.female;
+            lblHair.Text = Strings.ClassEditor.hair;
+
             //Searching/Sorting
             btnChronological.ToolTipText = Strings.ClassEditor.sortchronologically;
             txtSearch.Text = Strings.ClassEditor.searchplaceholder;
